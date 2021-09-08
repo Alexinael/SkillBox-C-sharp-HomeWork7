@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Theme_07/Example_751
+/Theme_07/Example_740
+/Theme_07/Example_732_Indexer
+/Theme_07/Example_730_Prop
+/Theme_07/Example_730_Ctor
+/Theme_07/Example_720_AccessModifiers
+/Theme_07/Example_710_Intro
