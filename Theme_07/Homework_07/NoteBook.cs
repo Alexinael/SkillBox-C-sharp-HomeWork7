@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks; 
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 
 namespace Homework_07
 {
+
+    public class WeatherForecast
+    {
+        public DateTimeOffset Date { get; set; }
+        public int TemperatureCelsius { get; set; }
+        public string Summary { get; set; }
+    }
+
     public struct NoteBook
     {
         /// <summary>
@@ -293,6 +302,22 @@ namespace Homework_07
             while (line != null);
             Console.ReadKey();
         }
+        public string toJson()
+        {
+            List<string> forReturn = new List<string>();
+
+            foreach(NoteBookRecord items in this.allRecords)
+            {
+               // string s = $"\{'\}";
+            }
+            WeatherForecast weatherForecast = new WeatherForecast();
+            weatherForecast.Date = DateTime.Now;
+
+            //string jsonString = JsonSerializer.Serialize(weatherForecast);
+
+            return "";
+        }
+
 
         /// <summary>
         /// Запись данных в файл
@@ -316,17 +341,37 @@ namespace Homework_07
             }
             try
             {
-                TextWriter tx;//= new TextWriter();
-                StreamWriter streamWriter = new StreamWriter(Path);
+                TextWriter tx;//= new TextWriter(Path);
+                //StreamWriter streamWriter = new StreamWriter(Path);
                 string _json; //Serialize<List<NoteBookRecord>>(this.allRecords);
-                Newtonsoft.Json.JsonSerializer jsonSerializer = new Newtonsoft.Json.JsonSerializer();//.SerializeObject(this.allRecords);
 
-                _json = Newtonsoft.Json.JsonConvert.SerializeObject( this.allRecords.ToArray());
+                //Newtonsoft.Json.JsonSerializer jsonSerializer = new Newtonsoft.Json.JsonSerializer();//.SerializeObject(this.allRecords);
 
+                //_json = Newtonsoft.Json.JsonConvert.SerializeObject( this.allRecords.ToArray());
+                /*
+                List<NoteBookRecord> k = new List<NoteBookRecord>();
+                NoteBookRecord n = new NoteBookRecord("TEST TITLE", "TEST TEXT", 1);
+                NoteBookRecord nn = new NoteBookRecord("TEST TITLE", "TEST TEXT", 1);
+                k.Add(n);
+
+                var ser = JsonSerializer.CreateDefault(new JsonSerializerSettings()
+                {
+                    
+                });
+                */
+               // ser.Serialize(tx, k);
                 
-                streamWriter.Write(_json);
+               // _json = JsonConvert.SerializeObject(nn);
+                //_json = JsonConvert.SerializeObject(k);
+                //_json = JsonSerializer.Serialize(tx, k );
+                _json = JsonConvert.SerializeObject(this.allRecords);
+                
+               // _json = toJson();
+                File.WriteAllText(Path, _json);
+
+                //streamWriter.Write(_json);
                  
-                streamWriter.Close();
+                //streamWriter.Close();
                 this.pause("Запись завершена");
             }
             catch (Exception error) {
@@ -336,3 +381,4 @@ namespace Homework_07
 
     }
 }
+
