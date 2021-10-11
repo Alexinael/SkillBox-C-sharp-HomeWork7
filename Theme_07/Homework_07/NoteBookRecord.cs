@@ -28,17 +28,10 @@ namespace Homework_07
             this.createDate = "";
             this.finished = false;
         }
-        //[Serializable]
-
-       // [OnSerializing]
-        public string ser()
-        {
-            string a = "";
-            return "";
-        }
+        
         public NoteBookRecord(string title="", string comment="", int index = -1)
         {
-            this.createDate = "";
+            this.createDate = DateTime.Now.ToString();
             this.title = title;
             this.comment = comment;
             this.author = "local"; // machine name
@@ -48,6 +41,7 @@ namespace Homework_07
             }
             this.finished = false;
         }
+
         public string getRecord()
         {
             return $"{this.title} от {this.createDate} [{this.author}]\n\t{this.comment}";
