@@ -347,6 +347,7 @@ namespace Homework_07
                         {
                             authors.Add(noteBookRecord.author);
                             subMenu.Add(new Option($"{noteBookRecord.author}",()=>{
+                                local.allRecords = local.filter(local.allRecords,null, noteBookRecord.author,null ,false);
                                 }));
                         }
                     }
@@ -356,15 +357,19 @@ namespace Homework_07
                 new Option("\t\t по дате",() => {
                     Console.CursorVisible = true;
 
-                    local.showTitle("Действия с записями");
+                    local.showTitle("Действия с записями.Введи дату для удаления");
+
+                    string date4delete = Console.ReadLine().Trim();
+                    local.allRecords = local.filter(local.allRecords, date4delete, null ,null ,false);
 
                     local.showMainMenu();
                     }),
                 new Option("\t\t по тексту",() => {
                     Console.CursorVisible = true;
 
-                    local.showTitle("Действия с записями");
-
+                    local.showTitle("Действия с записями. Введи текст для удаления");
+                    string text4delete = Console.ReadLine().Trim();
+                    local.allRecords = local.filter(local.allRecords, null, null, text4delete.Trim(), false);
                     local.showMainMenu();
                     }),
 
@@ -460,14 +465,24 @@ namespace Homework_07
 
         */
 
-        public List<NoteBookRecord> filter(List<NoteBookRecord> innerListRecord , string date = null, string author = null, string message  =null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="innerListRecord">Входящий список</param>
+        /// <param name="date">Дата отсева</param>
+        /// <param name="author">Автор для отсева</param>
+        /// <param name="message">Сообщения для отбора</param>
+        /// <param name="reverse">True - отфильтрованные, False - то что попало в исключения</param>
+        /// <returns></returns>
+        public List<NoteBookRecord> filter(List<NoteBookRecord> innerListRecord , string date = null, string author = null, string message  =null, bool reverse = true)
         {
             List<NoteBookRecord> tmpRecord = innerListRecord;
+            List<NoteBookRecord> forDelete = new List<NoteBookRecord>();
 
             if (author != null)
             {
 
-                List<NoteBookRecord> forDelete = new List<NoteBookRecord>();
+                
                 foreach (NoteBookRecord record in tmpRecord)
                 {
                     if (!record.author.Contains(author))
@@ -483,7 +498,6 @@ namespace Homework_07
             }
             if (message != null)
             {
-                List<NoteBookRecord> forDelete = new List<NoteBookRecord>();
                 foreach (NoteBookRecord record in tmpRecord)
                 {
                     if (!record.comment.Contains(message) && !record.title.Contains(message))
@@ -501,7 +515,6 @@ namespace Homework_07
             {
                 DateTime dt = DateTime.Parse(date);
                 tmpRecord = (List<NoteBookRecord>)tmpRecord.Where(x => DateTime.Parse(x.createDate) > dt);
-                List<NoteBookRecord> forDelete = new List<NoteBookRecord>();
                 foreach (NoteBookRecord record in tmpRecord)
                 {
                     if (DateTime.Parse(record.createDate) >= dt)
@@ -514,7 +527,15 @@ namespace Homework_07
                     tmpRecord.Remove(forDel);
                 }
             }
-            return tmpRecord;
+            if (reverse)
+            {
+                return tmpRecord;
+            }
+            else
+            {
+                return forDelete;
+            }
+            
         }
 
         /// <summary>
